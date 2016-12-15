@@ -1,0 +1,85 @@
+// Send data
+// port to send the udp packet to
+int responsePort = Integer.parseInt(response[INDEX_OF_PORT]);
+String msg = UDPResponseThread.RESPONSE + ":" + sequenceNumber + ":" + files.toString();
+DatagramSocket clientSocket = null;
+try{
+    clientSocket = new DatagramSocket();
+    byte[] sendData;
+    sendData = msg.getBytes();
+    DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length,
+            InetAddress.getByName(responseIP.substring(1, responseIP.length())), responsePort);
+    clientSocket.send(sendPacket);
+    System.out.println("sent to ip:" + InetAddress.getByName(responseIP.substring(1,
+            responseIP.length() - 1).toString()) + " port:" + responsePort);
+    clientSocket.close();
+
+}catch (SocketException e){
+    System.out.println("SocketException requestHandler " + e.getMessage());
+}catch (IOException e){
+    System.out.println("IOException requestHandler" + e.getMessage());
+}
+
+// Receive data
+DatagramSocket serverSocket = null;
+try{
+    serverSocket = new DatagramSocket(port);
+}catch (SocketException e){
+    e.printStackTrace();
+}
+byte[] receiveData = new byte[1500];
+
+while(true){
+    try{
+        DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+        serverSocket.receive(receivePacket);
+        String input = new String(receivePacket.getData(), 0, receivePacket.getLength());
+        System.out.println("RECEIVED: " + input);
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+
+RECEIVED: INVITE sip:192.168.1.123 SIP/2.0
+Via: SIP/2.0/UDP 192.168.1.123:49157;branch=z9hG4bKc0a8017b000000485539273700004b0900000004;rport
+From: "unknown" <sip:192.168.1.123:49157>;tag=51f2141c52b
+To: <sip:192.168.1.123>
+Contact: <sip:192.168.1.123:49157>
+Call-ID: 00D51E99289C44928BB6144663CA78F70xc0a8017b
+CSeq: 1 INVITE
+Max-Forwards: 70
+User-Agent: SJphone/1.65.377a (SJ Labs)
+Content-Length: 368
+Content-Type: application/sdp
+Supported: replaces,norefersub,timer
+
+v=0
+o=- 3638797751 3638797751 IN IP4 192.168.1.123
+s=SJphone
+c=IN IP4 192.168.1.123
+t=0 0
+m=audio 49158 RTP/AVP 3 97 98 8 0 101
+c=IN IP4 192.168.1.123
+a=rtpmap:3 GSM/8000
+a=rtpmap:97 iLBC/8000
+a=rtpmap:98 iLBC/8000
+a=fmtp:98 mode=20
+a=rtpmap:8 PCMA/8000
+a=rtpmap:0 PCMU/8000
+a=rtpmap:101 telephone-event/8000
+a=fmtp:101 0-16
+a=setup:active
+a=sendrecv
+
+
+
+ACK sip:192.168.1.123:49157 SIP/2.0
+Via: SIP/2.0/UDP 192.168.1.123:49157;branch=z9hG4bKc0a8017b000001d4553a6f22000063e400000068;rport
+From: "robert" <sip:192.168.1.123:49157>;tag=27db1198759
+To: <sip:192.168.1.123>
+Contact: <sip:192.168.1.123:49157>
+Call-ID: 8AAFEA297D9E43C98B0E8A8802472FCA0xc0a8017b
+CSeq: 1 ACK
+Max-Forwards: 70
+User-Agent: SJphone/1.65.377a (SJ Labs)
+Content-Length: 0

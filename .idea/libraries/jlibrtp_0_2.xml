@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jlibrtp-0.2">
+    <CLASSES />
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/jlibrtp-0.2.2.zip!/jlibrtp-0.2.2" />
+    </SOURCES>
+  </library>
+</component>
