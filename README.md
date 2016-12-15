@@ -1,4 +1,4 @@
 SIPSpeaker
 ==========
 
-IK2213-Assignment_2
+An implementation of a SIPSpeaker, made from scratch.
